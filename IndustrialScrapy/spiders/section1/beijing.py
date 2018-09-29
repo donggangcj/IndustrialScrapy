@@ -1,11 +1,11 @@
+import re
+
 import scrapy
-from scrapy.spiders import CrawlSpider, Rule
-from scrapy.linkextractors import LinkExtractor
 
 from IndustrialScrapy.items import IndustrialItem
 
 
-class BeijingSpider(CrawlSpider):
+class BeijingSpider(scrapy.Spider):
     name = 'beijing'
     header = {"User-Agent": 'Mozilla/5.0 (X11; Linux x86_64) AppleWe'
                             'bKit/537.36(KHTML, like Gecko) Chrome/6'
@@ -14,9 +14,11 @@ class BeijingSpider(CrawlSpider):
     area = 'beijing'
     origin = "beijing"
     keys = ['工业互联网', '工业App']
+
     url = 'http://jxw.beijing.gov.cn:8080/oasearch/front/search.do'
-    links = LinkExtractor(restrict_css='div.pagingrf a.fymar')
-    rules = [Rule(links, callback='parse_item', follow=True)]
+
+    # links = LinkExtractor(restrict_css='div.pagingrf a.fymar')
+    # rules = [Rule(links, callback='parse_item', follow=True)]
 
     def start_requests(self):
         for key in self.keys:
@@ -24,8 +26,15 @@ class BeijingSpider(CrawlSpider):
                 url=self.url,
                 headers=self.header,
                 formdata={"pageNo": "1", "orderField": "", "orderType": "", "query": key},
-                callback=self.parse_item
+                callback=lambda response, key=key: self.get_page(response, key)
             )
+
+    def get_page(self, response, key):
+        pages_num = int(re.search(re.compile('\d+'), response.css('div.paginglf::text').extract_first()).group())
+        for _ in range(1, pages_num + 1):
+            yield scrapy.FormRequest(dont_filter=True, url=self.url, headers=self.header,
+                                     formdata={"pageNo": str(_), "orderField": "", "orderType": "", "query": key},
+                                     callback=self.parse_item)
 
     # crawl spider :avoiding using 'parse' as callback
     def parse_item(self, response):
@@ -40,10 +49,3 @@ class BeijingSpider(CrawlSpider):
             item['keyword'] = keyword
             yield item
 
-            # try:
-            #     next_page = response.css('div.pagingrf a.fymar')
-            #     if next_page:
-            #         yield response.follow(next_page, callback=self.parse)
-            # except Exception as e:
-            #     # FIXME : show the logger's sender class
-            #     self.logger.warning('There is no next page:{}'.format(e))
