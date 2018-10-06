@@ -13,7 +13,7 @@ class JiangsuSpider(scrapy.Spider):
                             'bKit/537.36(KHTML, like Gecko) Chrome/6'
                             '3.0.3239.132 Safari/537.36'}
     area = 'jiangsu'
-    keys = ['工业互联网', '工业App']
+    keys = ['工业App', '工业互联网']
 
     def start_requests(self):
         for key in self.keys:
@@ -21,7 +21,9 @@ class JiangsuSpider(scrapy.Spider):
                 url='http://www.jiangsu.gov.cn/jrobot/search.do?webid=1&analyzeType=1&pg=12&p={p}&tpl=2&category=&q={key}&pos=&od=&date=&date='.format(
                     p=1, key=quote(key)),
                 headers=self.header,
-                callback=lambda response, key=key: self.get_page(response, key)
+                callback=lambda response, key=key: self.get_page(response, key),
+                #重复的请求被过滤了，这里第一次获取页面数量，第一页的数据会被过滤
+                dont_filter=True
             )
 
     def get_page(self, response, key):
@@ -45,4 +47,4 @@ class JiangsuSpider(scrapy.Spider):
             item['title'] = ''.join(_.css('div.jsearch-result-title a::text, em::text').extract())
             item['area'] = self.area
             item['keyword'] = key
-            yield  item
+            yield item
