@@ -46,3 +46,5 @@ class IndustrialItem(scrapy.Item):
     time = scrapy.Field()
     # file_urls = scrapy.Field()
     keyword = scrapy.Field()
+    begin_time = scrapy.Field()
+    end_time = scrapy.Field()
