@@ -9,7 +9,57 @@
 
 import json
 import datetime
-from bson.objectid import  ObjectId
+
+from flask import jsonify
+from bson.objectid import ObjectId
+
+AREA_MAP = {
+    "shanghai": "上海",
+    "zhejiang": "浙江",
+    "jiangsu": "江苏",
+    "anhui": "安徽",
+    "chanyelianmeng": "工业互联网产业联盟",
+    "gongxinbu": "工信部",
+    "souhu": "搜狐网",
+    "xinhua": "新华网",
+    "shandong": "山东",
+    "beijing": "北京",
+    "guangdong": "广东",
+    "zaoqizhineng": "造奇智能",
+    "huodongjia": "活动家",
+    "huodongxing": "活动行"
+}
+
+
+# 转化地址
+def areamap(item):
+    if not isinstance(item, dict):
+        return ValueError('The arg must be the dict type')
+    item['area'] = AREA_MAP[item['area']]
+    if item['time'].find('-'):
+        item['time'] = datetime.datetime.strptime(item['time'], '%Y-%m-%d')
+    else:
+        item['time'] = datetime.datetime.strptime(item['time'], '%Y年%m月%d日')
+    return item
+
+
+KEYWORD = ["工业互联网", "工业App", "工业互联网活动", "航天云网", "根云", "用友工业互联网", "beacon", "isesol"]
+
+MSG_MAP = {
+    200: 'success',
+    401: '未提供认证信息',
+    402: '认证信息过期，请重新登录',
+    403: '错误的认证信息',
+    404: '请求内容不存在',
+    405: '不允许的操作',
+    410: '用户名已存在',
+    421: '用户名或密码错误',
+    422: '请求缺少必要参数',
+    500: '请求错误，请联系管理员',
+    501: 'JSON格式错误',
+    10000: '目录名已存在',
+    10001: '文件传输错误'
+}
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -21,3 +71,12 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(o, datetime.datetime):
             return str(o)
         return json.JSONEncoder.default(self.o)
+
+
+# 统一格式返回
+def to_json(code, data=None):
+    return jsonify({
+        "code": code,
+        "msg": MSG_MAP[code],
+        "data": data
+    })
