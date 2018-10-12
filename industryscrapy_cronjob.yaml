@@ -1,0 +1,13 @@
+apiVersion: batch/v1beta1
+kind: Cronjob
+metadata:
+  name: industryscrapy
+spec:
+  schedule: "*/0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+      spec:
+        containers:
+          - name: industyscrapy-cronjob
+            image: daocloud.io/daocloud/industryscrapy:master-2cb8441
