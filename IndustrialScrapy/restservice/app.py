@@ -25,10 +25,14 @@ app.json_encoder = JSONEncoder
 
 @app.route('/latest', methods=['POST', 'GET'])
 def get_latest():
+    if request.method == 'GET':
+        page_number = 0
+    else:
+        page_number = int(request.json.get('page', 0))
     begin_time = datetime.datetime.now() - datetime.timedelta(weeks=1)  # 七天之前
     dummy_id = ObjectId.from_datetime(begin_time)
     try:
-        cursor = mongo.db.industrial.find({'_id': {'$gte': dummy_id}})
+        cursor = mongo.db.industrial.find({'_id': {'$gte': dummy_id}}).skip(page_number*10).limit(10)
     except Exception as e:
         app.logger(e)
         return to_json(500)
@@ -43,7 +47,7 @@ def get_news():
         page_number = query_filter.pop('page', 0)
         # 拆分查询参数
         cursor = mongo.db.industrial.find(query_filter).sort('_id', -1).skip(page_number * 10 - 10).limit(10)
-        return to_json(200, data=list(map(areamap, cursor)))
+        return to_json(200, data={'items': list(map(areamap, cursor)), 'page': page_number})
     else:
         return to_json(501)
 
