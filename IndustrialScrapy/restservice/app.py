@@ -39,8 +39,10 @@ def get_latest():
 def get_news():
     if request.is_json:
         query_filter = request.json
+        # 删除一个item，并且返回value
+        page_number = query_filter.pop('page', 0)
         # 拆分查询参数
-        cursor = mongo.db.industrial.find(query_filter).sort('_id',-1).skip(page_number*10-10).limit(10)
+        cursor = mongo.db.industrial.find(query_filter).sort('_id', -1).skip(page_number * 10 - 10).limit(10)
         return to_json(200, data=list(map(areamap, cursor)))
     else:
         return to_json(501)
