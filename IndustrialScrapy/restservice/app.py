@@ -15,7 +15,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
 from IndustrialScrapy.settings import MONGO_DATABASE, MONGO_URI
-from IndustrialScrapy.restservice.util import JSONEncoder, to_json
+from IndustrialScrapy.restservice.util import JSONEncoder, to_json, areamap
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = MONGO_URI + '/' + MONGO_DATABASE
@@ -32,15 +32,16 @@ def get_latest():
     except Exception as e:
         app.logger(e)
         return to_json(500)
-    return to_json(200, data=list(cursor))
+    return to_json(200, data=list(map(areamap, cursor)))
 
 
 @app.route('/news', methods=['GET', 'POST'])
 def get_news():
     if request.is_json:
         query_filter = request.json
-        cursor = mongo.db.industrial.find(query_filter)
-        return to_json(200, data=list(cursor))
+        # 拆分查询参数
+        cursor = mongo.db.industrial.find(query_filter).sort('_id',-1).skip(page_number*10-10).limit(10)
+        return to_json(200, data=list(map(areamap, cursor)))
     else:
         return to_json(501)
 
