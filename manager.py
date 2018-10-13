@@ -23,6 +23,7 @@ def run_crawer_single_prcess():
     process.crawl('huodongjia')
     process.crawl('gongxinbu')
     process.start()
+    #TODO:定时任务实现
     # time.sleep(86400)
 
 

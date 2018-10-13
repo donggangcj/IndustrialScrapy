@@ -35,6 +35,7 @@ def get_latest():
     begin_time = datetime.datetime.now() - datetime.timedelta(weeks=1)  # 七天之前
     dummy_id = ObjectId.from_datetime(begin_time)
     try:
+        # FIXME the skip prference is versy pool
         cursor = mongo.db.industrial.find({'_id': {'$gte': dummy_id}}).skip(page_number * 10).limit(10)
     except Exception as e:
         app.logger(e)
