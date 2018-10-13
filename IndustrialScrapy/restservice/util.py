@@ -36,10 +36,11 @@ def areamap(item):
     if not isinstance(item, dict):
         return ValueError('The arg must be the dict type')
     item['area'] = AREA_MAP[item['area']]
-    if item['time'].find('-'):
-        item['time'] = datetime.datetime.strptime(item['time'], '%Y-%m-%d')
+    item_time = item['time'].split()[0]
+    if item_time.find('-'):
+        item['time'] = datetime.datetime.strptime(item_time, '%Y-%m-%d')
     else:
-        item['time'] = datetime.datetime.strptime(item['time'], '%Y年%m月%d日')
+        item['time'] = datetime.datetime.strptime(item_time, '%Y年%m月%d日')
     return item
 
 

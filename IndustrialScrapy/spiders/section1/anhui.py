@@ -40,10 +40,10 @@ class AnhuiSpider(scrapy.Spider):
             url = urljoin(self.base_url, item.css('a::attr(href)').extract_first())
             yield scrapy.Request(
                 url=url,
-                callback=lambda response, key=key: self.parse(response, key)
+                callback=lambda response, key=key: self.parse_detail(response, key)
             )
 
-    def parse(self, response, key):
+    def parse_detail(self, response, key):
         industrial_item = IndustrialItem()
         industrial_item['title'] = response.css('div.atctitle h1::text').extract_first()
         industrial_item['url'] = response.url

@@ -1,7 +1,8 @@
 FROM python:3.6
 COPY . /usr/src/restapp
+ENV PYTHONPATH "${PATHONPATH}:../../"
 WORKDIR /usr/src/restapp/IndustrialScrapy/restservice/
 RUN pip install --upgrade pip\
     && pip install -r ../../requirements.txt
 EXPOSE 5000
-CMD PYTHONPATH=../../ python app.py
+CMD python app.py
