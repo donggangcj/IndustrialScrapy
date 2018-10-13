@@ -11,7 +11,6 @@
 # sys.path.append('../../')
 
 import datetime
-import json
 
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
@@ -50,7 +49,7 @@ def get_news():
         # 删除一个item，并且返回value
         page_number = query_filter.pop('page', 0)
         # 拆分查询参数
-        cursor = mongo.db.industrial.find(query_filter).sort('_id', -1).skip(page_number * 10 ).limit(10)
+        cursor = mongo.db.industrial.find(query_filter).sort('_id', -1).skip(page_number * 10).limit(10)
         return to_json(200, data={'items': list(map(areamap, cursor)), 'page': page_number})
     else:
         return to_json(501)
