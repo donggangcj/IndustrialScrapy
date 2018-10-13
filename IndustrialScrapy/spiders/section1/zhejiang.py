@@ -11,7 +11,7 @@ class ZhejiangSpider(scrapy.Spider):
     area = "zhejiang"
     origin = "zhejiang"
 
-    url = 'http://www.zjjxw.gov.cn/jrobot/search.do?webid=1585&pg=12&p={p}&tpl=&category=&q={key}&pq={key}&oq=&eq=&doctype=&pos=&od=0&date=&date='
+    url = 'http://www.zjjxw.gov.cn/jrobot/search.do?webid=1585&pg=12&p={p}&tpl=&category=&q={key}&pq=12&oq=&eq=&doctype=&pos=&od=0&date=&date='
     base_url = '{}://{}'.format(urlparse(url).scheme, urlparse(url).netloc)
     keys = ['工业互联网', '工业App']
 
@@ -27,6 +27,7 @@ class ZhejiangSpider(scrapy.Spider):
         page_num = int(response.css('#jsearch-info-box::attr(data-total)').extract_first())
         for i in range(1, ceil(page_num / 12) + 1):
             yield scrapy.Request(
+                dont_filter=True,
                 url=self.url.format(p=i, key=quote(key)),
                 callback=self.parse
             )
