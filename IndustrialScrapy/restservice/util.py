@@ -32,10 +32,11 @@ AREA_MAP = {
 
 
 # 转化地址
-def areamap(item):
+def format_return_data(item):
     if not isinstance(item, dict):
         return ValueError('The arg must be the dict type')
     item['area'] = AREA_MAP[item['area']]
+    item['id'] = item.pop('_id')
     item_time = item['time'].split()[0]
     if item_time.find('-'):
         item['time'] = datetime.datetime.strptime(item_time, '%Y-%m-%d')
