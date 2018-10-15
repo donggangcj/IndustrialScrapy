@@ -4,6 +4,7 @@ from urllib.parse import quote, urljoin, urlparse
 from math import ceil
 
 from IndustrialScrapy.items import IndustrialItem
+from ..util import format_return_date
 
 
 class ZhejiangSpider(scrapy.Spider):
@@ -38,8 +39,10 @@ class ZhejiangSpider(scrapy.Spider):
             industrial_item = IndustrialItem()
             industrial_item['title'] = ''.join([item.css('div.jsearch-result-title a::text').extract_first(),
                                                 *item.css('div.jsearch-result-title  em::text').extract()])
-            industrial_item['url'] = urljoin(self.base_url, item.css('div.jsearch-result-title a::attr(href)').extract_first())
-            industrial_item['time'] = item.css('span.jsearch-result-date::text').extract_first().split()[0]
+            industrial_item['url'] = urljoin(self.base_url,
+                                             item.css('divjsearch-result-title a::attr(href)').extract_first())
+            industrial_item['time'] = format_return_date(
+                item.css('span.jsearch-result-date::text').extract_first().split()[0])
             industrial_item['area'] = self.area
             industrial_item['nature'] = None
             industrial_item['origin'] = self.origin

@@ -11,15 +11,18 @@
 # sys.path.append('../../')
 
 import datetime
+import os
 
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
-from IndustrialScrapy.settings import MONGO_DATABASE, MONGO_URI
+# from IndustrialScrapy.settings import MONGO_DATABASE, MONGO_URI
 from IndustrialScrapy.restservice.util import JSONEncoder, to_json, format_return_data
 
 app = Flask(__name__)
+MONGO_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+MONGO_DATABASE = os.getenv('MONGODB_DATABASE', 'industry')
 app.config['MONGO_URI'] = MONGO_URI + '/' + MONGO_DATABASE
 mongo = PyMongo(app)
 app.json_encoder = JSONEncoder
@@ -46,6 +49,14 @@ def get_latest():
 def get_news():
     if request.is_json:
         query_filter = request.json
+        if query_filter.get('date'):
+            for i, value in enumerate(query_filter.get('date')):
+                query_filter.get('date')[i] = datetime.datetime.utcfromtimestamp(value)
+            time = query_filter.pop('date')
+            query_filter['time'] = {
+                '$gte': time[0],
+                '$lt': time[1]
+            }
         # 删除一个item，并且返回value
         page_number = query_filter.pop('page', 0)
         # 拆分查询参数

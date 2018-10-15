@@ -5,6 +5,7 @@ from math import ceil
 import scrapy
 
 from IndustrialScrapy.items import IndustrialItem
+from ..util import format_return_date
 
 
 class JiangsuSpider(scrapy.Spider):
@@ -22,7 +23,7 @@ class JiangsuSpider(scrapy.Spider):
                     p=1, key=quote(key)),
                 headers=self.header,
                 callback=lambda response, key=key: self.get_page(response, key),
-                #重复的请求被过滤了，这里第一次获取页面数量，第一页的数据会被过滤
+                # 重复的请求被过滤了，这里第一次获取页面数量，第一页的数据会被过滤
                 dont_filter=True
             )
 
@@ -42,7 +43,7 @@ class JiangsuSpider(scrapy.Spider):
         for _ in response.css('div.jsearch-result-box'):
             item = IndustrialItem()
             item['url'] = _.css('div.jsearch-result-url a::text').extract_first()
-            item['time'] = _.css('span.jsearch-result-date::text').extract_first()
+            item['time'] = format_return_date(_.css('span.jsearch-result-date::text').extract_first())
             item['nature'] = 'None'
             item['title'] = ''.join(_.css('div.jsearch-result-title a::text, em::text').extract())
             item['area'] = self.area

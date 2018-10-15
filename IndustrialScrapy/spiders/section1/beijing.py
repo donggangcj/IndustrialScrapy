@@ -1,8 +1,10 @@
 import re
+import datetime
 
 import scrapy
 
 from IndustrialScrapy.items import IndustrialItem
+from IndustrialScrapy.spiders.util import format_return_date
 
 
 class BeijingSpider(scrapy.Spider):
@@ -43,9 +45,8 @@ class BeijingSpider(scrapy.Spider):
             item = IndustrialItem()
             item['url'] = _.css('dd a i::text').extract_first()
             item['title'] = ''.join(_.css('dt a i::text,dt a i font::text').extract())
-            item['time'] = _.css('dt p::text').extract_first().strip()
+            item['time'] = format_return_date(_.css('dt p::text').extract_first().strip())
             item['area'] = self.origin
             item['nature'] = ''
             item['keyword'] = keyword
             yield item
-

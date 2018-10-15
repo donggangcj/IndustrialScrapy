@@ -5,6 +5,7 @@ from urllib.parse import urljoin, urlparse
 import re
 
 from IndustrialScrapy.items import IndustrialItem
+from ..util import format_return_date
 
 
 class AnhuiSpider(scrapy.Spider):
@@ -49,7 +50,8 @@ class AnhuiSpider(scrapy.Spider):
         industrial_item['url'] = response.url
         # TODO learn the python re
         pattern = re.compile(r'.*(\d\d\d\d-\d\d-\d\d)')
-        industrial_item['time'] = pattern.match(response.css('div.atctitle h5::text').extract_first()).group(1)
+        industrial_item['time'] = format_return_date(
+            pattern.match(response.css('div.atctitle h5::text').extract_first()).group(1))
         industrial_item['area'] = self.area
         industrial_item['nature'] = response.xpath('//span[@class="where"]/a[last()]/text()').extract()[0]
         industrial_item['keyword'] = key

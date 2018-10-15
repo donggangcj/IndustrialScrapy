@@ -5,6 +5,7 @@ import json
 import scrapy
 
 from IndustrialScrapy.items import IndustrialItem
+from ..util import format_return_date
 
 
 class HuodongjiaSpider(scrapy.Spider):
@@ -30,11 +31,11 @@ class HuodongjiaSpider(scrapy.Spider):
         for item in res:
             industry_item = IndustrialItem()
             industry_item['title'] = item.get('event_name')
-            industry_item['time'] = item.get('event_rel_time')
+            industry_item['time'] = format_return_date(item.get('event_rel_time'))
             industry_item['area'] = self.area
             industry_item['url'] = urljoin(self.base_url, item.get('event_url'))
             industry_item['nature'] = '活动'
-            industry_item['begin_time'] = item.get('event_begin_time')
-            industry_item['end_time'] = item.get('event_end_time')
+            industry_item['begin_time'] = format_return_date(item.get('event_begin_time'))
+            industry_item['end_time'] = format_return_date(item.get('event_end_time'))
             industry_item['keyword'] = key
             yield industry_item

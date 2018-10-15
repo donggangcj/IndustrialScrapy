@@ -37,11 +37,11 @@ def format_return_data(item):
         return ValueError('The arg must be the dict type')
     item['area'] = AREA_MAP[item['area']]
     item['id'] = item.pop('_id')
-    item_time = item['time'].split()[0]
-    if item_time.find('-'):
-        item['time'] = datetime.datetime.strptime(item_time, '%Y-%m-%d')
-    else:
-        item['time'] = datetime.datetime.strptime(item_time, '%Y年%m月%d日')
+    # item_time = item['time'].split()[0]
+    # if item_time.find('-'):
+    #     item['time'] = datetime.datetime.strptime(item_time, '%Y-%m-%d')
+    # else:
+    #     item['time'] = datetime.datetime.strptime(item_time, '%Y年%m月%d日')
     return item
 
 

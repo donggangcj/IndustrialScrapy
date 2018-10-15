@@ -4,6 +4,7 @@ from math import ceil
 
 import scrapy
 from IndustrialScrapy.items import IndustrialItem
+from ..util import format_return_date
 
 
 class GongxinbuSpider(scrapy.Spider):
@@ -42,7 +43,7 @@ class GongxinbuSpider(scrapy.Spider):
         for item in result_array:
             industry_item = IndustrialItem()
             industry_item['url'] = item.get('url')
-            industry_item['time'] = item.get('showTime')
+            industry_item['time'] = format_return_date(item.get('showTime'))
             industry_item['title'] = item.get('name')
             industry_item['area'] = self.area
             industry_item['nature'] = None

@@ -7,6 +7,7 @@ import scrapy
 import requests
 
 from IndustrialScrapy.items import IndustrialItem
+from ..util import format_return_date
 
 
 class SohuSpider(scrapy.Spider):
