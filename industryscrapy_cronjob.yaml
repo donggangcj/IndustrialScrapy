@@ -1,5 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: industry-scrapy-config
+data:
+  mongodb_uri: 'mongodb://10.102.173.94:27017/'
+  mongodb_database: 'industry'
+---
 apiVersion: batch/v1beta1
-kind: Cronjob
+kind: CronJob
 metadata:
   name: industryscrapy
 spec:
@@ -7,7 +16,19 @@ spec:
   jobTemplate:
     spec:
       template:
-      spec:
-        containers:
+        spec:
+          containers:
           - name: industyscrapy-cronjob
-            image: daocloud.io/daocloud/industryscrapy:master-2cb8441
+            image: daocloud.io/daocloud/industryscrapy:master-b2aa83c
+            env:
+            - name: MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: industry-scrapy-config
+                  key: mongodb_uri
+            - name: MONGODB_DATABASE
+              valueFrom:
+                 configMapKeyRef:
+                   name: industry-scrapy-config
+                   key: mongodb_database
+          restartPolicy: OnFailure

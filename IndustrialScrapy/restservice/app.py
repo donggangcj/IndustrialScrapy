@@ -7,8 +7,8 @@
 @Desc  : 
 '''
 
-# import sys
-# sys.path.append('../../')
+import sys
+sys.path.append('../../')
 
 import datetime
 import os
@@ -17,7 +17,6 @@ from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
-# from IndustrialScrapy.settings import MONGO_DATABASE, MONGO_URI
 from IndustrialScrapy.restservice.util import JSONEncoder, to_json, format_return_data
 
 app = Flask(__name__)

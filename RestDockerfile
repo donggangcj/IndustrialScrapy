@@ -1,6 +1,7 @@
 FROM python:3.6
 COPY . /usr/src/restapp
-ENV PYTHONPATH "${PATHONPATH}:../../"
+#ENV PYTHONPATH "${PATHONPATH}:../../" \
+ENV MONGODB_URI='mongodb://localhost:27017' MONGODB_DATABASE='industry'
 WORKDIR /usr/src/restapp/IndustrialScrapy/restservice/
 RUN pip install --upgrade pip \
     && pip install -r ../../requirements.txt
