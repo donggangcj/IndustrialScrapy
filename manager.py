@@ -24,6 +24,7 @@ def run_crawer_single_prcess():
     process.crawl('gongxinbu')
     process.crawl('zhejiang')
     process.crawl('anhui')
+    process.crawl('shanghai')
     process.start()
     #TODO:定时任务实现
     # time.sleep(86400)

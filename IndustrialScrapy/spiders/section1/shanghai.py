@@ -27,7 +27,6 @@ class ShanghaiSpider(scrapy.Spider):
     def get_page(self, response, key):
         pattern = re.compile(r'共(\d+)条记录')
         pages = int(pattern.search(''.join(response.css('div.page::text').extract())).group(1))
-        print(pages)
         for i in range(1, ceil(pages / 10) + 1):
             yield scrapy.FormRequest(
                 dont_filter=True,
@@ -38,7 +37,6 @@ class ShanghaiSpider(scrapy.Spider):
 
     def parse_item(self, response):
         keyword = response.css('div.search_t input::attr(value)').extract_first()
-        print(keyword)
         for item in response.css('ul.earch_list li'):
             industrial_item = IndustrialItem()
             industrial_item['title'] = item.css('a::attr(title)').extract_first()
