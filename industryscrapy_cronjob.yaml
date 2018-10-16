@@ -26,7 +26,7 @@ spec:
                 configMapKeyRef:
                   name: industry-scrapy-config
                   key: mongodb_uri
-            - name: MONGODB_DATABASE
+            - name: mongodb_database
               valueFrom:
                  configMapKeyRef:
                    name: industry-scrapy-config

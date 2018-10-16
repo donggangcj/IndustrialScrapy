@@ -45,6 +45,28 @@ def format_return_data(item):
     return item
 
 
+def format_query_data(item):
+    if not isinstance(item, dict):
+        return ValueError('The arg must be the dict type')
+    if item.get('date'):
+        for i, value in enumerate(item.get('date')):
+            item.get('date')[i] = datetime.datetime.utcfromtimestamp(value)
+        time = item.pop('date')
+        item['time'] = {
+            '$gte': time[0],
+            '$lt': time[1]
+        }
+    if item.get('area'):
+        item['area'] = {
+            '$in': item.get('area')
+        }
+    if item.get('key'):
+        item['keyword'] = {
+            '$in': item.pop('key')
+        }
+    return item
+
+
 KEYWORD = ["工业互联网", "工业App", "工业互联网活动", "航天云网", "根云", "用友工业互联网", "beacon", "isesol"]
 
 MSG_MAP = {
