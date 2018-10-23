@@ -44,10 +44,10 @@ def format_return_data(item):
 def format_query_data(item):
     if not isinstance(item, dict):
         return ValueError('The arg must be the dict type')
-    if item.get('date'):
-        for i, value in enumerate(item.get('date')):
-            item.get('date')[i] = datetime.datetime.utcfromtimestamp(value)
-        time = item.pop('date')
+    if item.get('time'):
+        for i, value in enumerate(item.get('time')):
+            item.get('time')[i] = datetime.datetime.utcfromtimestamp(value)
+        time = item.pop('time')
         item['time'] = {
             '$gte': time[0],
             '$lt': time[1]

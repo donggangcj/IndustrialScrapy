@@ -52,8 +52,10 @@ def get_latest():
 
 @app.route('/industrial/news', methods=['GET', 'POST'])
 def get_news():
+    print(request.json)
     if request.is_json:
         query_filter = format_query_data(request.json)
+        print(query_filter)
         # 删除一个item，并且返回value
         page_number = int(query_filter.pop('page', 0))
         # 拆分查询参数
