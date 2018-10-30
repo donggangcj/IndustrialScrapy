@@ -82,6 +82,8 @@ def get_news():
 #         db.close()
 
 def make_public_task(task):
+    pri
+
 
 
 
