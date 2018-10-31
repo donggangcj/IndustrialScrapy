@@ -7,7 +7,7 @@
 @Desc  : 
 '''
 import mongoengine
-from mongoengine import StringField, DateTimeField, EmbeddedDocumentField, EmailField, Fi
+from mongoengine import StringField, DateTimeField, EmbeddedDocumentField, EmailField
 from werkzeug.security import generate_password_hash, check_password_hash
 
 mongoengine.connect('mongoengine_test', host='localhost', port=27017)
