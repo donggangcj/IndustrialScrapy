@@ -12,6 +12,7 @@ import os
 class Config:
     MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/industry')
     FLASK_ADMIN_SWATCH = os.getenv('FLASK_ADMIN_SWATCH', 'cerulean')
+    SECRET_KEY = os.getenv('SECRET_KEY', 'guss me ')
 
     @staticmethod
     def init_app(app):
@@ -26,11 +27,16 @@ class DevelopmentConfig(Config):
         Config.init_app(app)
 
 
+class TestingConfig(Config):
+    TESTING = True
+
+
 class ProductionConfig(Config):
     pass
 
 
 config = {
     'develop': DevelopmentConfig,
-    'production': ProductionConfig
+    'production': ProductionConfig,
+    'test': TestingConfig
 }

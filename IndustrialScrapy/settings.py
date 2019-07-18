@@ -68,7 +68,8 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     'IndustrialScrapy.pipelines.MongoPileline': 300,
 }
-MONGO_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+# MONGO_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+MONGO_URI = os.getenv('MONGODB_URI', 'mongodb://192.168.60.71:31073')
 MONGO_DATABASE = os.getenv('MONGODB_DATABASE', 'industry')
 
 # Enable and configure the AutoThrottle extension (disabled by default)
