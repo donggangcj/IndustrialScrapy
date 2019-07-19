@@ -20,6 +20,8 @@ class ProjectDeclareItem(scrapy.Item):
     date = scrapy.Field()
     url = scrapy.Field()
     name = scrapy.Field()
+    keyword = scrapy.Field()
+    origin = scrapy.Field()
 
 
 class JobItem(scrapy.Item):
