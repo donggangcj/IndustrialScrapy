@@ -11,8 +11,7 @@ from IndustrialScrapy.items import ProjectDeclareItem
 class AiiAllianceSpider(scrapy.Spider):
     name = 'aii-alliance'
 
-    # keys = ['工业互联网', '工业物联网', '工业4.0', '智慧工厂', '智能制造2025']
-    keys = ['工业互联网', ]
+    keys = ['工业互联网', '工业物联网', '工业4.0', '智慧工厂', '智能制造2025']
     url = 'http://www.aii-alliance.org/index.php?m=content&c=search&a=search'
 
     def start_requests(self):
