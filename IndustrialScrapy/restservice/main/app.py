@@ -53,3 +53,4 @@ def get_news():
     else:
         return to_json(501)
 
+
