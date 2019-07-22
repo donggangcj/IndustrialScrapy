@@ -7,7 +7,6 @@
 @Desc  : 
 '''
 
-import time
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
@@ -25,6 +24,7 @@ def run_crawer_single_prcess():
     process.crawl('zhejiang')
     process.crawl('anhui')
     process.crawl('shanghai')
+    process.crawl('netofthings')
     process.start()
     #TODO:定时任务实现
     # time.sleep(86400)

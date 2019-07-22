@@ -5,6 +5,8 @@ venv/
 *.pyc
 __pycache__/
 
+IndustrialScrapy/__pycache__/
+
 instance/
 
 .pytest_cache/

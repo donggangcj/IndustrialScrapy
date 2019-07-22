@@ -19,7 +19,6 @@ class NetofthingsSpider(scrapy.Spider):
 
     def get_page(self, response, key):
         selects = response.xpath('//div[@class="pager"]/ul/li[1]/text()')
-        print("------------", len(selects))
         if len(selects) == 0:
             return
         pages = int(selects.extract()[0].split('/')[-1])
@@ -28,14 +27,13 @@ class NetofthingsSpider(scrapy.Spider):
                 url = self.url.format(keyword=key)
             else:
                 url = self.url + '&page={page}'.format(keyword=key, page=page + 1)
-            print(url)
+            self.logger.info(url)
             yield scrapy.Request(url=url,
                                  callback=lambda inter_response, key=key: self.parse(inter_response, key),
                                  dont_filter=True
                                  )
 
     def parse(self, response, key):
-        print('==============')
         for _ in response.xpath('//div[@class="mm"]/div[@class="sResult"]'):
             item_datetime = datetime.strptime(_.xpath('//div[@class="foot"]/span/text()').extract()[-1].strip(),
                                               '%Y/%m/%d %H:%M:%S')
