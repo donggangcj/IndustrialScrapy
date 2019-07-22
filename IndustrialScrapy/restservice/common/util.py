@@ -7,11 +7,11 @@
 @Desc  : 
 '''
 
-import json
 import datetime
+import json
 
-from flask import jsonify
 from bson.objectid import ObjectId
+from flask import jsonify
 
 AREA_MAP = {
     "shanghai": "上海",
@@ -27,7 +27,8 @@ AREA_MAP = {
     "guangdong": "广东",
     "zaoqizhineng": "造奇智能",
     "huodongjia": "活动家",
-    "huodongxing": "活动行"
+    "huodongxing": "活动行",
+    "netofthings": "物联网世界"
 }
 
 

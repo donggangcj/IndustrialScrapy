@@ -5,7 +5,7 @@ from datetime import datetime
 
 import scrapy
 
-from IndustrialScrapy.items import ProjectDeclareItem
+from IndustrialScrapy.items import IndustrialItem
 
 
 class AiiAllianceSpider(scrapy.Spider):
@@ -35,10 +35,11 @@ class AiiAllianceSpider(scrapy.Spider):
             item_datetime = datetime.strptime(_.css('div.download_list_time::text').extract_first().strip(), '%Y.%m.%d')
             if abs((datetime.utcnow() - item_datetime).days) > 180:
                 return
-            item = ProjectDeclareItem()
-            item['name'] = _.css('h2::text').extract_first()
+            item = IndustrialItem()
+            item['title'] = _.css('h2::text').extract_first()
             item['url'] = _.css('a::attr(href)').extract_first()
-            item['date'] = item_datetime
+            item['time'] = item_datetime
             item['keyword'] = key
             item['origin'] = self.name
+            item['area'] = self.name
             yield item
