@@ -16,17 +16,20 @@ from scrapy.utils.project import get_project_settings
 def run_crawer_single_prcess():
     process = CrawlerProcess(get_project_settings())
     process.crawl('aii-alliance')
-    process.crawl('beijing')
-    process.crawl('sohu')
-    process.crawl('jiangsu')
-    process.crawl('huodongjia')
-    process.crawl('gongxinbu')
-    process.crawl('zhejiang')
-    process.crawl('anhui')
-    process.crawl('shanghai')
+    # process.crawl('beijing')
+    # process.crawl('sohu')
+    # process.crawl('jiangsu')
+    # process.crawl('huodongjia')
+    # process.crawl('gongxinbu')
+    # process.crawl('zhejiang')
+    # process.crawl('anhui')
+    # process.crawl('shanghai')
     process.crawl('netofthings')
+    process.crawl('ccidnet')
+    process.crawl('netofthingsguoji')
+    process.crawl('cifexpo')
     process.start()
-    #TODO:定时任务实现
+    # TODO:定时任务实现
     # time.sleep(86400)
 
 

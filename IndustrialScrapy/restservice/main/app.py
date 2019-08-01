@@ -13,12 +13,12 @@
 import datetime
 from math import ceil
 
-from flask import current_app, request
 from bson.objectid import ObjectId
+from flask import current_app, request
 
-from IndustrialScrapy.restservice.common.util import to_json, format_return_data, format_query_data
-from .. import mongo
+from IndustrialScrapy.restservice.common.util import to_json, format_return_data, format_query_data, AREA_MAP, KEYWORD
 from . import main
+from .. import mongo
 
 
 @main.route('/industrial/latest', methods=['POST', 'GET'])
@@ -36,21 +36,29 @@ def get_latest():
     except Exception as e:
         current_app.logger(e)
         return to_json(500)
-    return to_json(200, data={"items": list(map(format_return_data, cursor)), 'page': ceil(counts / 10)})
+    return to_json(200, data={"items": list(filter(lambda item: item is not None, map(format_return_data, cursor))),
+                              'page': ceil(counts / 10)})
 
 
 @main.route('/industrial/news', methods=['GET', 'POST'])
 def get_news():
-    print(request.json)
     if request.is_json:
         query_filter = format_query_data(request.json)
-        print(query_filter)
         # 删除一个item，并且返回value
         page_number = int(query_filter.pop('page', 0))
         # 拆分查询参数
         cursor = mongo.db.industrial.find(query_filter).sort('_id', -1).skip(page_number * 10).limit(10)
-        return to_json(200, data={'items': list(map(format_return_data, cursor)), 'page': page_number})
+        return to_json(200, data={'items': list(filter(lambda item: item is not None, map(format_return_data, cursor))),
+                                  'page': page_number})
     else:
         return to_json(501)
 
 
+@main.route('/origins', methods=['GET'])
+def origins():
+    return to_json(200, data=AREA_MAP)
+
+
+@main.route('/keywords', methods=['GET'])
+def keyword():
+    return to_json(200, data=KEYWORD)

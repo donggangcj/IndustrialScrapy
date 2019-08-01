@@ -10,7 +10,8 @@ import os
 
 
 class Config:
-    MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/industry')
+    MONGO_URI = os.getenv('MONGO_URI', 'mongodb://192.168.60.71:31073/industry')
+    # MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/industry')
     FLASK_ADMIN_SWATCH = os.getenv('FLASK_ADMIN_SWATCH', 'cerulean')
     SECRET_KEY = os.getenv('SECRET_KEY', 'guss me ')
 

@@ -11,7 +11,7 @@ from IndustrialScrapy.items import IndustrialItem
 class AiiAllianceSpider(scrapy.Spider):
     name = 'aii-alliance'
 
-    keys = ['工业互联网', '工业物联网', '工业4.0', '智慧工厂', '智能制造2025']
+    keys = ['工业互联网', '工业物联网', '工业4.0', '智慧工厂', 'PAAS平台']
     url = 'http://www.aii-alliance.org/index.php?m=content&c=search&a=search'
 
     def start_requests(self):
@@ -34,7 +34,7 @@ class AiiAllianceSpider(scrapy.Spider):
         for _ in response.css('ul.download_list li'):
             item_datetime = datetime.strptime(_.css('div.download_list_time::text').extract_first().strip(), '%Y.%m.%d')
             if abs((datetime.utcnow() - item_datetime).days) > 180:
-                return
+                yield None
             item = IndustrialItem()
             item['title'] = _.css('h2::text').extract_first()
             item['url'] = _.css('a::attr(href)').extract_first()

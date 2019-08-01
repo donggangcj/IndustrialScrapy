@@ -37,7 +37,7 @@ class NetofthingsSpider(scrapy.Spider):
             item_datetime = datetime.strptime(_.xpath('.//div[@class="foot"]/span/text()').extract()[-1].strip(),
                                               '%Y/%m/%d %H:%M:%S')
             if abs((datetime.utcnow() - item_datetime).days) > 180:
-                return
+                yield None
             item = IndustrialItem()
             item['title'] = ''.join(_.xpath('.//div[@class="title"]/a//text()').extract())
             # item['name'] = _.xpath('//div[@class="sum"]/text()').extract()[0].strip()
@@ -47,3 +47,6 @@ class NetofthingsSpider(scrapy.Spider):
             item['area'] = self.name
             item['keyword'] = key
             yield item
+
+
+

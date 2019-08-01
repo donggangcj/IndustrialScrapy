@@ -13,32 +13,47 @@ import json
 from bson.objectid import ObjectId
 from flask import jsonify
 
-AREA_MAP = {
-    "shanghai": "上海",
-    "zhejiang": "浙江",
-    "jiangsu": "江苏",
-    "anhui": "安徽",
-    "chanyelianmeng": "工业互联网产业联盟",
-    "gongxinbu": "工信部",
-    "souhu": "搜狐网",
-    "xinhua": "新华网",
-    "shandong": "山东",
-    "beijing": "北京",
-    "guangdong": "广东",
-    "zaoqizhineng": "造奇智能",
-    "huodongjia": "活动家",
-    "huodongxing": "活动行",
-    "netofthings": "物联网世界"
-}
+# AREA_MAP = {
+#     "shanghai": "上海",
+#     "zhejiang": "浙江",
+#     "jiangsu": "江苏",
+#     "anhui": "安徽",
+#     "chanyelianmeng": "工业互联网产业联盟",
+#     "gongxinbu": "工信部",
+#     "souhu": "搜狐网",
+#     "xinhua": "新华网",
+#     "shandong": "山东",
+#     "beijing": "北京",
+#     "guangdong": "广东",
+#     "zaoqizhineng": "造奇智能",
+#     "huodongjia": "活动家",
+#     "huodongxing": "活动行",
+#     "netofthings": "物联网世界",
+#     "aii-alliance": "工业互联网产业联盟",
+#     "ccidnet": "赛迪",
+#     "cifexpo": "上海智能工厂",
+# }
+
+AREA_MAP = [
+    {'text': '物联网世界', 'key': 'netofthings', 'value': 'netofthings'},
+    {'text': '工业互联网产业联盟', 'key': 'aii-alliance', 'value': 'aii-alliance'},
+    {'text': '赛迪', 'key': 'ccidnet', 'value': 'ccidnet'},
+    {'text': '上海智能工厂', 'key': 'cifexpo', 'value': 'cifexpo'},
+]
 
 
 # 转化地址
 def format_return_data(item):
     if not isinstance(item, dict):
         return ValueError('The arg must be the dict type')
-    item['area'] = AREA_MAP[item['area']]
+    # item['area'] = AREA_MAP[item['area']]
+    res = list(filter(lambda i: i.get('key') == item['area'], AREA_MAP))
+    # if res is None or len(res) == 0:
+    #     return None
+    item['area'] = res[0].get('text')
     item['id'] = item.pop('_id')
-    item['time'] = datetime.datetime.timestamp(item.pop('time'))
+    if item['time'] is not None:
+        item['time'] = datetime.datetime.timestamp(item.pop('time'))
     return item
 
 
@@ -64,7 +79,7 @@ def format_query_data(item):
     return item
 
 
-KEYWORD = ["工业互联网", "工业App", "工业互联网活动", "航天云网", "根云", "用友工业互联网", "beacon", "isesol"]
+KEYWORD = ['工业互联网', '工业物联网', '工业4.0', '智慧工厂', 'PAAS平台']
 
 MSG_MAP = {
     200: 'success',

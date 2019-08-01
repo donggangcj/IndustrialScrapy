@@ -1,9 +1,16 @@
 FROM python:3.6
+ENV MONGODB_URI='mongodb://192.168.60.71:31073/industry'  FLASK_APP=startup.py
 COPY . /usr/src/restapp
-#ENV PYTHONPATH "${PATHONPATH}:../../" \
-ENV MONGODB_URI='mongodb://localhost:27017' MONGODB_DATABASE='industry'
-WORKDIR /usr/src/restapp/IndustrialScrapy/restservice/
+WORKDIR /usr/src/restapp
 RUN pip install --upgrade pip \
-    && pip install -r ../../requirements.txt
+    && pip install -r requirements.txt \
+    && apt-get update \
+    && apt-get install -y  supervisor
+
+
+COPY supervisord.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/supervisord.sh
+
 EXPOSE 5000
-CMD ["gunicorn", "--config", "../../gunicorn_config.py", "app:app"]
+
+CMD ["sh", "/usr/local/bin/supervisord.sh"]
